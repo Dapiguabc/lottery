@@ -92,20 +92,16 @@ const DrawCard = (props) => {
         setShowCover(true)
     }
 
-    const buyTicket = () => {
-        // To be done
-    }
-
     useEffect(() => {
         const countDownTime = () => {
             let now = new Date()
-            let end = changeTimeZone(round.endTime)
+            let end = new Date(round.endTime)
     
             let lefttime = end.getTime() - now.getTime(),
-            d = Math.round(lefttime/(1000*60*60*24)), 
-            h = Math.round(lefttime/(1000*60*60)%24), 
-            m = Math.round(lefttime/(1000*60)%60),
-            s = Math.round(lefttime/1000%60)
+            d = Math.trunc(lefttime/(1000*60*60*24)), 
+            h = Math.trunc(lefttime/(1000*60*60)%24), 
+            m = Math.trunc(lefttime/(1000*60)%60),
+            s = Math.trunc(lefttime/1000%60)
 
             setLeftTime([d, h, m, s])
         }
@@ -117,7 +113,7 @@ const DrawCard = (props) => {
         };
       }, [round.endTime]);
 
-    
+
     const totalPrize = useMemo(() => {
         let result = new BigNumber(round.statistics.restPrize).plus(round.statistics.totalBetAmount)
         return result.toString()

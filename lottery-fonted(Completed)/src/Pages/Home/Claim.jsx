@@ -204,7 +204,7 @@ const Claim = () => {
             return changeTimeZone(date).toLocaleString()
         }
 
-        if (userRounds.length > 0) {
+        if (userRounds.length > 0 && wallet.account) {
             getAllVariable(contract, "rounds", [])
             .then((res) => {
                 if (res === {}) return
@@ -231,10 +231,14 @@ const Claim = () => {
                 }
                 setBetInfo(betList)
             })
+        } else {
+            setBetInfo([])
         }
     }, [userRounds, wallet.account])
 
-    const roundList = betInfo.map(item => <Round key={item.id} data={item} />)
+    const roundList = useMemo(() => {
+        return betInfo.map(item => <Round key={item.id} data={item} />) 
+    }, [betInfo])
 
     return (
         <VStack bg='gray.100' p={4} h='100%'>

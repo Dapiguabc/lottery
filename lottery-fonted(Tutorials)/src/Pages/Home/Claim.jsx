@@ -54,7 +54,7 @@ const Round = ({data}) => {
     }
 
     const claimBonus = () => {
-        // To be done
+        // to be done
     }
 
     return (
@@ -142,49 +142,9 @@ const Claim = () => {
     const [betInfo, setBetInfo] = useState([])
     const [wallet] = useWalletState()
 
-    useEffect(() => {
-        getVariable(contract, "user_rounds", [wallet.account], [])
-        .then((res) => setUserRounds(res))
-    }, [wallet.account])
-
-    useEffect(() => {
-        const convertDate = (dateArr) => {
-            let date = new Date(...dateArr)
-            date.setMonth(date.getMonth() - 1)
-            return changeTimeZone(date).toLocaleString()
-        }
-
-        if (userRounds.length > 0) {
-            getAllVariable(contract, "rounds", [])
-            .then((res) => {
-                if (res === {}) return
-
-                let betList = []
-
-                let data = res[contract]["rounds"]
-                for(let i of userRounds) {
-                    let round = i.toString()
-                    data[round].endTime = convertDate(data[round].endTime.__time__)
-                    data[round].startTime = convertDate(data[round].startTime.__time__)
-                    data[round].id = round
-
-                    for(let k in data[round].betInfo) {
-                        let amount = 0
-                        for(let b of data[round]['betInfo'][k]){
-                            if (b.buyer === wallet.account) {
-                                amount = new BigNumber(b.amount.__fixed__ || b.amount).plus(amount)
-                            }
-                        }
-                        data[round]['betInfo'][k] = amount.toString()
-                    }
-                    betList.push(data[i])
-                }
-                setBetInfo(betList)
-            })
-        }
-    }, [userRounds, wallet.account])
-
-    const roundList = betInfo.map(item => <Round key={item.id} data={item} />)
+    const roundList = useMemo(() => {
+        return betInfo.map(item => <Round key={item.id} data={item} />) 
+    }, [betInfo])
 
     return (
         <VStack bg='gray.100' p={4} h='100%'>

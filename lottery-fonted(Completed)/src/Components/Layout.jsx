@@ -32,12 +32,14 @@ const Layout = ({ children }) => {
 
     const connect = () => {
         const detail = JSON.stringify({
-            appName: AppInfo.appName,
-            version: AppInfo.version,
-            logo: AppInfo.logo,
-            contractName: Network[process.env.NODE_ENV].contractName,
-            networkType: Network[process.env.NODE_ENV].networkType,
+            appName: AppInfo.appName, // dapp name
+            version: AppInfo.version, // dapp verision
+            logo: AppInfo.logo, // dapp logo
+            contractName: Network[process.env.NODE_ENV].contractName, // the contract name you create at tutorial "Write Lottery Contract" 
+            networkType: Network[process.env.NODE_ENV].networkType, // Network type
         })
+    
+        // Dispatch connection event
         document.dispatchEvent(new CustomEvent('lamdenWalletConnect', {detail}));
     }
 
@@ -50,12 +52,9 @@ const Layout = ({ children }) => {
         })
     }
 
-    const handleWalletConnect = (response) => {
-        console.log(response)
-    }
-
     const handleWalletInfo = (response) => {
         if (response.detail.errors){
+            // If an error occurs, a pop-up window will appear
             toast({
                 title: 'Wallet Error',
                 description: response.detail.errors[0],
@@ -68,6 +67,9 @@ const Layout = ({ children }) => {
         } else {
             let locked = response.detail.locked;
             let account = !locked && response.detail.wallets.length > 0 ? response.detail.wallets[0] : null;
+            // account: Wallet account
+            // locked: Whether the Lamden Vault is locked
+            // connected: Whether connection is successful
             setWallet({
                 ...wallet,
                 locked,
@@ -79,9 +81,7 @@ const Layout = ({ children }) => {
 
     useEffect(() => {
         document.addEventListener('lamdenWalletInfo', handleWalletInfo);
-        document.addEventListener('lamdenWalletConnect', handleWalletConnect);
         return () => {
-            document.removeEventListener('lamdenWalletConnect', handleWalletConnect);
             document.removeEventListener('lamdenWalletInfo', handleWalletInfo);
         }
     }, [])

@@ -31,23 +31,19 @@ const Layout = ({ children }) => {
     //const blockServericeWS = process.env.NODE_ENV === 'production'? io(`ws://${Network[process.env.NODE_ENV].blockService}`) : io();
 
     const connect = () => {
-        // To be done
+        // to be done
     }
 
     const disconnect = () => {
-        // To be done
-    }
-
-    const handleWalletConnect = (response) => {
-        console.log(response)
+        // to be done
     }
 
     const handleWalletInfo = (response) => {
-        // To be done
+        // to be done
     }
 
     useEffect(() => {
-        // To be done
+        // to be done
     }, [])
 
     // useEffect(() => {
