@@ -32,6 +32,7 @@ const LotteryMap = {
 }
 
 const Network = {
+    // use mainnet because testnet is down..
     development: {
         blockService: "165.22.47.195:3535",
         currencySymbol: "dTau",
